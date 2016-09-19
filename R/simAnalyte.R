@@ -84,46 +84,6 @@ ana_distrNorm <- function(ana, center , spread){
   ana
 }
 
-
-# Prae-execution Modifiers with conditions
-#
-#
-# #@template analyte-block
-# #@param mod string to execute. All settings and params of the
-# analyte are in scope and are modifiable.
-# #@param cond condition when to execute modification function.
-xx_ana_condPraeModifyers <- function(ana, mod, cond = TRUE){
-  cond_str <- substitute(cond)
-  modFunc <- function(setting, params){
-    condMet <- eval(cond_str, setting)
-    if (nrow(setting) != nrow(params)){
-      params <- params[rep(seq_len(nrow(params)),
-                           each=round(nrow(setting)/
-                                        nrow(params))),]
-    }
-    params[condMet,] <- mod(ana[condMet,], params[condMet,])
-    params
-  }
-  ana[['praeHook']] <- append(ana[['praeHook']],
-                                     modFunc)
-  ana
-}
-
-xx_ana_timeCyle <- function(ana, cycles, maxChange,
-                         paramToChange = "center"){
-  rangeT <- max(ana[['setting']][["time"]]) -
-    min(ana[['setting']][["time"]])
-  p <- (2*3.14*cycles)/rangeT
-  func <- function(setting, param){
-    param[[paramToChange]] <- (1 + sin(setting$time*p*maxChange))*
-      param[[paramToChange]]
-    param
-  }
-  ana[['praeHook']] <- append(ana[['praeModifyers']],
-                                   func)
-  ana
-}
-
 #' Add Quality Control (QC) measurement
 #'
 #' This function adds QC measurements with known true values.
