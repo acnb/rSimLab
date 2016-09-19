@@ -1,0 +1,16 @@
+Package: rSimLab
+Type: Package
+Title: Simulation of measurements in laboratory medicine
+Version: 0.0.1.9000
+Authors@R: person("Andreas", "Bietenbeck",
+    email = "code@bietenbeck.net", role = c("aut", "cre"))
+Description: This package simulates measurements in clinical
+    chemisty with bias and imprecision.
+License: GPL-3
+LazyData: TRUE
+Imports:
+    magrittr,
+    plyr
+Suggests:
+    testthat
+RoxygenNote: 5.0.1
