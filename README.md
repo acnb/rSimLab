@@ -1,5 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+[![Travis-CI Build Status](https://travis-ci.org/acnb/rSimLab.png?branch=master)](https://travis-ci.org/acnb/rSimLab)
+
+[![Coverage Status](https://img.shields.io/codecov/c/github/acnb/rSimLab/master.svg)](https://codecov.io/github/acnb/rSimLab?branch=master)
+
 rSimLab
 =======
 
@@ -25,7 +29,7 @@ Please refer to the inline documentation for further examples.
 
 This package is not on CRAN yet. To install please run
 
-``` i
+``` r
 install.packages("devtools")
 library(devtools)
 install_github("acnb/rSimLab")
