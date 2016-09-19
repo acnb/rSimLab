@@ -6,6 +6,8 @@ Authors@R: person("Andreas", "Bietenbeck",
     email = "code@bietenbeck.net", role = c("aut", "cre"))
 Description: This package simulates measurements in clinical
     chemisty with bias and imprecision.
+URL: http://github.com/acnb/rSimLab
+BugReports: http://github.com/acnb/rSimLab/issues
 License: GPL-3
 LazyData: TRUE
 Imports:
