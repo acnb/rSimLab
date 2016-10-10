@@ -159,3 +159,26 @@ addPraeHook <- function(rSimLab, paramToModify,
   rSimLab[['praeHook']] <- append(rSimLab[['praeHook']], modFunc)
   rSimLab
 }
+
+
+#' Setter for the settings for analytes or measurements
+#'
+#' A setter function to supply settings (e.g. data.frame with true values) to
+#' measurements or analytes objects.
+#'
+#' @param rSimLab object of class rSimLab
+#' @param settings data.frame with settings
+#' @return rSimLab object of class rSimLab
+#' @examples
+#'  ana <- analyte() %>%
+#'    ana_distrLnorm(center = 5, spread = 5) %>%
+#'    setSettings(data.frame('time' = 1:10, 'type' = 'pat'))
+#' @export
+setSettings <- function(rSimLab, settings){
+  UseMethod("setSettings",rSimLab)
+}
+
+setSettings.default <- function(rSimLab, settings){
+  rSimLab[["setting"]] <- settings
+  rSimLab
+}

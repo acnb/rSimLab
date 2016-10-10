@@ -45,3 +45,30 @@ test_that('chaining', {
     values3$measurement, values4$measurement)))
 
 })
+
+test_that('setSettings', {
+  set.seed(1)
+  ana1 <- analyte(data.frame('time' = 1:10, 'type' = 'pat')) %>%
+    ana_distrLnorm(center = 5, spread = 5) %>% runSim()
+
+  set.seed(1)
+  ana2 <- analyte() %>%
+    ana_distrLnorm(center = 5, spread = 5) %>%
+    setSettings(data.frame('time' = 1:10, 'type' = 'pat')) %>%
+    runSim()
+
+  expect_equal(ana1$trueValues, ana2$trueValues)
+
+  set.seed(1)
+  mm1 <- measurement(ana1) %>%
+    mm_precCharFunc(.2, 3) %>% runSim()
+
+  set.seed(1)
+  mm2 <- measurement() %>%
+    setSettings(ana1) %>%
+    mm_precCharFunc(.2, 3) %>% runSim()
+
+  expect_equal(mm1$measurement, mm2$measurement)
+
+})
+
