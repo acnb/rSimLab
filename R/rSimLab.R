@@ -170,6 +170,8 @@ addPraeHook <- function(rSimLab, paramToModify,
 #' @param settings data.frame with settings
 #' @return rSimLab object of class rSimLab
 #' @examples
+#' # makes the code a lot more readable
+#' library(magrittr)
 #'  ana <- analyte() %>%
 #'    ana_distrLnorm(center = 5, spread = 5) %>%
 #'    setSettings(data.frame('time' = 1:10, 'type' = 'pat'))
@@ -178,6 +180,8 @@ setSettings <- function(rSimLab, settings){
   UseMethod("setSettings",rSimLab)
 }
 
+#' @export
+#' @rdname setSettings
 setSettings.default <- function(rSimLab, settings){
   rSimLab[["setting"]] <- settings
   rSimLab

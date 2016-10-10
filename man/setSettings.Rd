@@ -2,9 +2,12 @@
 % Please edit documentation in R/rSimLab.R
 \name{setSettings}
 \alias{setSettings}
+\alias{setSettings.default}
 \title{Setter for the settings for analytes or measurements}
 \usage{
 setSettings(rSimLab, settings)
+
+\method{setSettings}{default}(rSimLab, settings)
 }
 \arguments{
 \item{rSimLab}{object of class rSimLab}
@@ -19,6 +22,8 @@ A setter function to supply settings (e.g. data.frame with true values) to
 measurements or analytes objects.
 }
 \examples{
+# makes the code a lot more readable
+library(magrittr)
  ana <- analyte() \%>\%
    ana_distrLnorm(center = 5, spread = 5) \%>\%
    setSettings(data.frame('time' = 1:10, 'type' = 'pat'))

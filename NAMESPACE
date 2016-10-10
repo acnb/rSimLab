@@ -2,6 +2,7 @@
 
 S3method(runSim,default)
 S3method(runSim,measurement)
+S3method(setSettings,default)
 export(addPraeHook)
 export(ana_addQC)
 export(ana_distrLnorm)
