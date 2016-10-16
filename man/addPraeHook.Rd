@@ -4,36 +4,32 @@
 \alias{addPraeHook}
 \title{Hook for functions that are executed before the simulation.}
 \usage{
-addPraeHook(rSimLab, paramToModify, modification, cond = TRUE,
-  addEnv = environment())
+addPraeHook(rSimLab, cond = TRUE, ...)
 }
 \arguments{
 \item{rSimLab}{object of class rSimLab}
 
-\item{paramToModify}{name of the parameter that should
-be modified}
-
-\item{modification}{formular for modification}
-
 \item{cond}{condition, that must hold TRUE for the modification
 to be executed}
 
-\item{addEnv}{additional environment for the modification}
+\item{...}{Name-value pairs of expressions. Use NULL to drop a variable.}
 }
 \value{
 object of class rSimLab
 }
 \description{
-Hook for functions that are executed before the simulation.
+Functions are executed row by row. Variables are evaluated in the correct scope.
 }
 \examples{
-#' # makes the code a lot more readable
+# makes the code a lot more readable
 library(magrittr)
+diff <- 5
 analyte(data.frame('time' = 1:10, 'type' = 'pat')) \%>\%
   ana_distrNorm(center = 5, spread = 3) \%>\%
   ana_addQC(5, 'highQC') \%>\%
-  addPraeHook('center',
-               center + 5,
-               type != 'highQC')
+  addPraeHook(type != 'highQC', center = center + 5) \%>\%
+  addPraeHook(type != 'highQC', spread = runif(1,2,3)) \%>\%
+  addPraeHook(type != 'highQC', spread = spread + diff)
+
 }
 

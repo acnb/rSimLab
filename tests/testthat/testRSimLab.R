@@ -4,13 +4,26 @@ test_that('addPraeHook', {
   ana <- analyte(data.frame('time' = 1:10, 'type' = 'pat')) %>%
     ana_distrNorm(center = center, spread = spread) %>%
     ana_addQC(100, 'highQC') %>%
-    addPraeHook('center',
-                center + 5,
-                type != 'highQC')
+    addPraeHook( type != 'highQC', center = center + 5)
   values <- runSim(ana)
 
   expect_equal(values[values$type != 'highQC', 'center'],
                rep.int(center + 5 , 10))
+
+  diff <- 3
+  conT <- 'highQC'
+  ana <- ana %>% addPraeHook(type != conT, center = center + diff)
+  values <- runSim(ana)
+  expect_equal(values[values$type != 'highQC', 'center'],
+               rep.int(center + 5 + diff , 10))
+
+
+  ana <- ana %>% addPraeHook(type != conT, center = runif(1))
+  values <- runSim(ana)
+  expect_true(values[values$type != 'highQC', 'center'][1] !=
+               values[values$type != 'highQC', 'center'][2])
+
+
 })
 
 

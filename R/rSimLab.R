@@ -29,7 +29,7 @@
 #' # fluctuations.
 #' ana <- analyte(setting) %>%
 #'    ana_distrLnorm(19.5, 11.4) %>%
-#'    addPraeHook("center", center *(sin(time/365*3.14*2)*.075+1))
+#'    addPraeHook(TRUE, center = center *(sin(time/365*3.14*2)*.075+1))
 #' runSim(ana)
 #'
 #' # Repeated measurements of the same sample with different
@@ -120,41 +120,39 @@ runSim.default <- function(rSimLab){
 
 #' Hook for functions that are executed before the simulation.
 #'
-#'
+#' Functions are executed row by row. Variables are evaluated in the correct scope.
 #'
 #' @param rSimLab object of class rSimLab
-#' @param paramToModify name of the parameter that should
-#' be modified
-#' @param modification formular for modification
 #' @param cond condition, that must hold TRUE for the modification
 #' to be executed
-#' @param addEnv additional environment for the modification
+#' @param ... Name-value pairs of expressions. Use NULL to drop a variable.
 #'
 #' @return object of class rSimLab
 #' @export
 #'
+#' @importFrom magrittr %>%
 #' @examples
-#' #' # makes the code a lot more readable
+#' # makes the code a lot more readable
 #' library(magrittr)
+#' diff <- 5
 #' analyte(data.frame('time' = 1:10, 'type' = 'pat')) %>%
 #'   ana_distrNorm(center = 5, spread = 3) %>%
 #'   ana_addQC(5, 'highQC') %>%
-#'   addPraeHook('center',
-#'                center + 5,
-#'                type != 'highQC')
-addPraeHook <- function(rSimLab, paramToModify,
-                            modification, cond = TRUE,
-                        addEnv = environment()){
-  cond_str <- substitute(cond)
-  mod_str <- substitute(modification)
+#'   addPraeHook(type != 'highQC', center = center + 5) %>%
+#'   addPraeHook(type != 'highQC', spread = runif(1,2,3)) %>%
+#'   addPraeHook(type != 'highQC', spread = spread + diff)
+#'
+addPraeHook <- function(rSimLab, cond = TRUE, ...){
+  cond_str <- lazyeval::lazy(cond)
 
-  modFunc <- function(envir, params){
-    condMet <- eval(cond_str, cbind(envir, params), addEnv)
-    params[condMet, paramToModify] <-
-      eval(mod_str, cbind(envir[condMet, ,drop=F],
-                          params[condMet, ,drop=F]),
-                          addEnv)
-    params
+  modFunc <- function(settings, params){
+    comBObj <- cbind(settings, params)
+    condMet <- lazyeval::lazy_eval(cond_str, comBObj)
+
+    comBObj[condMet, ] <- comBObj[condMet, ] %>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(...)
+    comBObj[, !colnames(comBObj) %in% colnames(settings)]
   }
   rSimLab[['praeHook']] <- append(rSimLab[['praeHook']], modFunc)
   rSimLab

@@ -13,10 +13,9 @@
 #' simpleOverTime(10, 4, 2)
 simpleOverTime <- function(numberOfDays, meanMeasPerDay,
                            sdMeasPerDay){
-  plyr::ldply(1:numberOfDays, function(x){
-    data.frame(time = rep(x,
-      times=max(1, round(rnorm(1, mean = meanMeasPerDay,
-                               sd=sdMeasPerDay)))),
-               type = "pat")
-  })
+  df <- data.frame(time= rep(1:numberOfDays,
+          times=pmax(1, round(rnorm(numberOfDays, mean = meanMeasPerDay,
+                                                   sd=sdMeasPerDay)))))
+  df$type = 'pat'
+  df
 }

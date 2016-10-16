@@ -31,7 +31,7 @@ runSim(mm)
 # fluctuations.
 ana <- analyte(setting) \%>\%
    ana_distrLnorm(19.5, 11.4) \%>\%
-   addPraeHook("center", center *(sin(time/365*3.14*2)*.075+1))
+   addPraeHook(TRUE, center = center *(sin(time/365*3.14*2)*.075+1))
 runSim(ana)
 
 # Repeated measurements of the same sample with different

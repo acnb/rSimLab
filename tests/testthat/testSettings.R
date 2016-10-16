@@ -5,7 +5,9 @@ test_that('check mean, sd and number of days', {
  s <- simpleOverTime(nDays, meanNumberPerDay, sdPerDay)
 
 
- cs <- plyr::count(s, c('time'))
+ cs <- s %>% dplyr::group_by(time) %>%
+   dplyr::summarise(freq = n())
+
  expect_equal(nrow(cs), nDays)
  expect_equal(mean(cs$freq), meanNumberPerDay,
               tolerance=sdPerDay/(nDays^.5)*2.575, scale = 1)
