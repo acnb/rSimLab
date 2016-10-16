@@ -18,7 +18,7 @@ ana <- analyte(setting) %>%
 # Measurements with imprecision and bias.
 mm <- measurement(ana) %>%
     mm_precCharFunc(.067, 0.031) %>%
-    mm_accFunc(0, .03)
+    mm_truenessFunc(0, .03)
 # Execute simulation.
 runSim(mm)
 ```

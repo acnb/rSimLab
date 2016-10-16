@@ -17,15 +17,15 @@ test_that('imprecision', {
 })
 
 
-test_that('accuracy', {
+test_that('trueness', {
   mm <- measurement(data.frame('trueValue' = 3)) %>%
-    mm_accFunc(.2, 0)
+    mm_truenessFunc(.2, 0)
   values <- runSim(mm)
   expect_equal(values$measurement[1],
                3 + .2)
 
   mm <- measurement(data.frame('trueValue' = 3)) %>%
-    mm_accFunc(0, .2)
+    mm_truenessFunc(0, .2)
   values <- runSim(mm)
   expect_equal(values$measurement[1],
                3*1.2)

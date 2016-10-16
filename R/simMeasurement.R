@@ -13,7 +13,7 @@
 #' @param settings data.frame with 'trueValue colume' or analyte
 #' object
 #' @param f.imprec function to simulate imprecision
-#' @param f.inacc function to simualte accuracy
+#' @param f.trueness function to simualte trueness
 #' @template mainSteps
 #' @return measurement object
 #' @export
@@ -24,18 +24,18 @@ measurement <- function(settings = data.frame(),
                    sim.f = NULL,
                    postHook = list(),
                    f.imprec = function(...) 0,
-                   f.inacc = function(...) 0){
+                   f.trueness = function(...) 0){
 
   if (is.null(sim.f)){
-    sim.f <- function(x, f.imprec, f.inacc){
-      x[['trueValue']] + f.imprec(x) + f.inacc(x)
+    sim.f <- function(x, f.imprec, f.trueness){
+      x[['trueValue']] + f.imprec(x) + f.trueness(x)
     }
   }
 
   measurement <- rSimLab(settings, params, praeHook,
                         sim.f, postHook)
   measurement[['f.imprec']] <- f.imprec
-  measurement[['f.inacc']] <- f.inacc
+  measurement[['f.trueness']] <- f.trueness
 
   class(measurement) <- append(class(measurement),
                                "measurement")
@@ -77,19 +77,32 @@ mm_precCharFunc <- function(measurement, a, b){
 }
 
 
-#' Simulates constant and relative accuracy.
+#' @export
+#' @rdname mm_truenessFunc
+mm_accFunc <- function(measurement, constD = 0, relD = 0){
+  mm_truenessFunc(measurement, constD, relD)
+}
+
+#' Simulates constant and relative trueness.
 #'
+#' Systematic errors lead to a (constant or relativ) bias.
+#' The performance characteristics measuring bias is called "trueness".
+#' "Accuracy" is an outdated term for the same concept. See the
+#' reference for more details.
 #'
 #' @param constD constant deviation
 #' @param relD relative deviation
 #' @template measurement-block
 #'
 #' @export
-mm_accFunc <- function(measurement, constD = 0, relD = 0){
+#' @references Menditto, Antonio, Marina Patriarca, and Bertil Magnusson.
+#' "Understanding the meaning of accuracy, trueness and precision."
+#'  Accreditation and quality assurance 12.1 (2007): 45-47.
+mm_truenessFunc <- function(measurement, constD = 0, relD = 0){
   measurement[["params"]]$constD <- constD
   measurement[["params"]]$relD <- relD
 
-  measurement[['f.inacc']] <- function(x){
+  measurement[['f.trueness']] <- function(x){
     x$constD + x$trueValue * x$relD
   }
   measurement
@@ -121,7 +134,7 @@ runSim.measurement <- function(rSimLab){
 
   results[[rname]]  <-
     rSimLab[['sim.f']](results, rSimLab[['f.imprec']] ,
-                     rSimLab[['f.inacc']])
+                     rSimLab[['f.trueness']])
 
   results$resultName <- NULL
 

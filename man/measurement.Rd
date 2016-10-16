@@ -6,7 +6,7 @@
 \usage{
 measurement(settings = data.frame(), params = data.frame(resultName =
   "measurement"), praeHook = list(), sim.f = NULL, postHook = list(),
-  f.imprec = function(...) 0, f.inacc = function(...) 0)
+  f.imprec = function(...) 0, f.trueness = function(...) 0)
 }
 \arguments{
 \item{settings}{data.frame with 'trueValue colume' or analyte
@@ -22,7 +22,7 @@ object}
 
 \item{f.imprec}{function to simulate imprecision}
 
-\item{f.inacc}{function to simualte accuracy}
+\item{f.trueness}{function to simualte trueness}
 }
 \value{
 measurement object
