@@ -65,13 +65,8 @@ mm_precCharFunc <- function(measurement, a, b){
   measurement[["params"]]$a <- a
   measurement[["params"]]$b <- b
 
-  vfunc <- Vectorize(
-    function(tv, a, b)  rnorm(1, sd=(a^2+b^2*tv^2)^.5),
-    c('tv', 'a', 'b')
-    )
-
   measurement[['f.imprec']] <- function(x){
-    vfunc(x$trueValue, x$a, x$b)
+    rnorm(length(x$trueValue), sd=(x$a^2+x$b^2*x$trueValue^2)^.5)
   }
   measurement
 }
