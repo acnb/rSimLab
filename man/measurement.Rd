@@ -4,9 +4,10 @@
 \alias{measurement}
 \title{Measurements}
 \usage{
-measurement(settings = data.frame(), params = data.frame(resultName =
-  "measurement"), praeHook = list(), sim.f = NULL, postHook = list(),
-  f.imprec = function(...) 0, f.trueness = function(...) 0)
+measurement(settings = data.frame(), params = data.frame(measuredName =
+  "trueValue", resultName = "measurement"), praeHook = list(), sim.f = NULL,
+  postHook = list(), f.imprec = function(...) 0,
+  f.trueness = function(...) 0)
 }
 \arguments{
 \item{settings}{data.frame with 'trueValue colume' or analyte
@@ -22,7 +23,7 @@ object}
 
 \item{f.imprec}{function to simulate imprecision}
 
-\item{f.trueness}{function to simualte trueness}
+\item{f.trueness}{function to simulate trueness}
 }
 \value{
 measurement object

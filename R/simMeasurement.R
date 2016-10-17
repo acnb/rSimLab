@@ -13,12 +13,14 @@
 #' @param settings data.frame with 'trueValue colume' or analyte
 #' object
 #' @param f.imprec function to simulate imprecision
-#' @param f.trueness function to simualte trueness
+#' @param f.trueness function to simulate trueness
 #' @template mainSteps
 #' @return measurement object
 #' @export
 measurement <- function(settings = data.frame(),
-                   params = data.frame("resultName" =
+                   params = data.frame("measuredName" =
+                                       "trueValue",
+                                       "resultName" =
                                          "measurement"),
                    praeHook = list(),
                    sim.f = NULL,
@@ -26,9 +28,11 @@ measurement <- function(settings = data.frame(),
                    f.imprec = function(...) 0,
                    f.trueness = function(...) 0){
 
+
   if (is.null(sim.f)){
     sim.f <- function(x, f.imprec, f.trueness){
-      x[['trueValue']] + f.imprec(x) + f.trueness(x)
+      mname <- as.character(x$measuredName[1])
+      x[[mname]] + f.imprec(x) + f.trueness(x)
     }
   }
 
@@ -66,7 +70,8 @@ mm_precCharFunc <- function(measurement, a, b){
   measurement[["params"]]$b <- b
 
   measurement[['f.imprec']] <- function(x){
-    rnorm(length(x$trueValue), sd=(x$a^2+x$b^2*x$trueValue^2)^.5)
+    mname <- as.character(x$measuredName[1])
+    rnorm(length(x[[mname]]), sd=(x$a^2+x$b^2*x[[mname]]^2)^.5)
   }
   measurement
 }
@@ -98,7 +103,8 @@ mm_truenessFunc <- function(measurement, constD = 0, relD = 0){
   measurement[["params"]]$relD <- relD
 
   measurement[['f.trueness']] <- function(x){
-    x$constD + x$trueValue * x$relD
+    mname <- as.character(x$measuredName[1])
+    x$constD + x[[mname]] * x$relD
   }
   measurement
 }
@@ -117,7 +123,11 @@ runSim.measurement <- function(rSimLab){
                          each=round(nrow(setting)/
                                       nrow(params))),]
   }
-  params$trueValue <- setting$trueValue
+
+  mname <- as.character(params[1, "measuredName"])
+  rname <- as.character(params[1, "resultName"])
+
+  params[[mname]] <- setting[[mname]]
 
   for(f in rSimLab[["praeHook"]]){
     params <- f(setting, params)
@@ -125,16 +135,19 @@ runSim.measurement <- function(rSimLab){
 
   results <- cbind(setting[, !colnames(setting) %in%
                              colnames(params)], params)
-  rname <- as.character(params[1, "resultName"])
+
 
   results[[rname]]  <-
     rSimLab[['sim.f']](results, rSimLab[['f.imprec']] ,
                      rSimLab[['f.trueness']])
 
-  results$resultName <- NULL
-
   for(f in rSimLab[["postHook"]]){
     results <- f(results)
   }
+
+  results$resultName <- NULL
+  results$measuredName <- NULL
+
   results
+
 }
