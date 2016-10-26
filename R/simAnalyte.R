@@ -55,10 +55,8 @@ ana_distrLnorm <- function(ana, center , spread){
     m <- params[['center']]
     sdlog <- (log(1+s/m^2))^.5
     meanlog <- log(m/(1+s/m^2)^.5)
-    vfunc <- Vectorize(function(sdlog, meanlog){
-      rlnorm(1, sdlog=sdlog, meanlog=meanlog)
-      })
-    vfunc(sdlog, meanlog)
+    n <- length(meanlog)
+    rlnorm(n, sdlog=sdlog, meanlog=meanlog)
   }
   ana[['sim.f']] <-  func
 
@@ -74,10 +72,8 @@ ana_distrNorm <- function(ana, center , spread){
   func <- function(params){
     sd <- params[['spread']]
     mean <- params[['center']]
-    vfunc <- Vectorize(function(sd, mean){
-      rnorm(1, sd=sd, mean=mean)
-    })
-    vfunc(sd, mean)
+    n <- length(mean)
+    rnorm(n, sd=sd, mean=mean)
   }
   ana[['sim.f']] <-  func
 
