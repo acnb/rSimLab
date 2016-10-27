@@ -120,7 +120,9 @@ runSim.default <- function(rSimLab){
 
 #' Hook for functions that are executed before the simulation.
 #'
-#' Functions are executed row by row. Variables are evaluated in the correct scope.
+#' Functions are executed row by row. Variables are evaluated in the
+#' correct scope. PraeHook Functions can only modify parameters, not
+#' settings.
 #'
 #' @param rSimLab object of class rSimLab
 #' @param cond condition, that must hold TRUE for the modification
@@ -149,9 +151,11 @@ addPraeHook <- function(rSimLab, cond = TRUE, ...){
     comBObj <- cbind(settings, params)
     condMet <- lazyeval::lazy_eval(cond_str, comBObj)
 
-    comBObj[condMet, ] <- comBObj[condMet, ] %>%
-      dplyr::rowwise() %>%
-      dplyr::mutate(...)
+    if(nrow(comBObj[condMet, ]) > 0){
+      comBObj[condMet, ] <- comBObj[condMet, ] %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(...)
+    }
     comBObj[, !colnames(comBObj) %in% colnames(settings)]
   }
   rSimLab[['praeHook']] <- append(rSimLab[['praeHook']], modFunc)

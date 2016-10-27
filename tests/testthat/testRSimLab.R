@@ -26,6 +26,19 @@ test_that('addPraeHook', {
 
 })
 
+test_that('praeHook measurement', {
+  results <- measurement(data.frame('cond' =c('A', 'B'),
+                                'trueValue' = c(3, 4))) %>%
+    mm_precCharFunc(0, 0) %>%
+    mm_truenessFunc(1, 0) %>%
+    addPraeHook(cond == 'A', constD = constD +2) %>%
+    runSim()
+
+  expect_equal(results[results$cond == 'A', 'measurement'], 3+2+1)
+  expect_equal(results[results$cond == 'B', 'measurement'], 4+1)
+
+})
+
 
 test_that('chaining', {
   ana <- analyte(data.frame('time' = 1:10, 'type' = 'pat')) %>%

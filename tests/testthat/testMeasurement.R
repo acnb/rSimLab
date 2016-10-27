@@ -56,3 +56,11 @@ test_that('change measuredName', {
 
   expect_equal(values1, values2)
 })
+
+test_that('acc equals trueness',{
+  mm <- measurement(data.frame('trueValue' = 3))
+
+  res1 <- mm %>% mm_accFunc(.2, .3) %>% runSim()
+  res2 <- mm %>% mm_truenessFunc(.2, .3) %>% runSim()
+  expect_equal(res1, res2)
+})
