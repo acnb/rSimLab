@@ -18,7 +18,9 @@ to be executed}
 object of class rSimLab
 }
 \description{
-Functions are executed row by row. Variables are evaluated in the correct scope.
+Functions are executed row by row. Variables are evaluated in the
+correct scope. PraeHook Functions can only modify parameters, not
+settings.
 }
 \examples{
 # makes the code a lot more readable

@@ -39,6 +39,27 @@ test_that('praeHook measurement', {
 
 })
 
+test_that('postHook', {
+  results <- measurement(data.frame('cond' =c('A', 'B'),
+                                    'trueValue' = c(3, 4))) %>%
+    mm_precCharFunc(0, 0) %>%
+    mm_truenessFunc(1, 0) %>%
+    addPostHook(cond == 'A', measurement = measurement *2) %>%
+    runSim()
+
+  expect_equal(results[results$cond == 'A', 'measurement'], (3+1)*2)
+  expect_equal(results[results$cond == 'B', 'measurement'], 4+1)
+
+  ana <- analyte(data.frame(time=10)) %>%
+    ana_distrNorm(5, 2) %>%
+    addPostHook(trueValue > 5, trueValue = 5) %>%
+    runSim()
+
+  expect_true(max(ana$trueValue) <=5)
+
+
+})
+
 
 test_that('chaining', {
   ana <- analyte(data.frame('time' = 1:10, 'type' = 'pat')) %>%

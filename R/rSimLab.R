@@ -163,6 +163,36 @@ addPraeHook <- function(rSimLab, cond = TRUE, ...){
 }
 
 
+#' Hook for functions that are executed after the simulation.
+#'
+#' Functions are executed row by row. Variables are evaluated in the
+#' correct scope.
+#'
+#' @param rSimLab object of class rSimLab
+#' @param cond condition, that must hold TRUE for the modification
+#' to be executed
+#' @param ... Name-value pairs of expressions. Use NULL to drop a variable.
+#'
+#' @return object of class rSimLab
+#' @export
+addPostHook <- function(rSimLab, cond = TRUE, ...){
+  cond_str <- lazyeval::lazy(cond)
+
+  modFunc <- function(results){
+    condMet <- lazyeval::lazy_eval(cond_str, results)
+
+    if(nrow(results[condMet, ]) > 0){
+      results[condMet, ] <- results[condMet, ] %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(...)
+    }
+    results
+  }
+  rSimLab[['postHook']] <- append(rSimLab[['postHook']], modFunc)
+  rSimLab
+}
+
+
 #' Setter for the settings for analytes or measurements
 #'
 #' A setter function to supply settings (e.g. data.frame with true values) to
