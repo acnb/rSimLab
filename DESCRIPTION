@@ -1,7 +1,7 @@
 Package: rSimLab
 Type: Package
 Title: Simulation of measurements in laboratory medicine
-Version: 0.0.2.9000
+Version: 0.1.0.0
 Authors@R: person("Andreas", "Bietenbeck",
     email = "code@bietenbeck.net", role = c("aut", "cre"))
 Description: This package simulates measurements in clinical
