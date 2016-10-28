@@ -119,3 +119,23 @@ test_that('setSettings', {
 
 })
 
+test_that('hook execution and scope', {
+  center <- 5
+  spread <- 2
+  ana <- analyte(data.frame('time' = 1:10, 'type' = 'pat')) %>%
+    ana_distrNorm(center = center, spread = spread) %>%
+    ana_addQC(100, 'highQC')
+
+
+  condType <- 'pat'
+  ana <- ana %>%
+    addPraeHook( type == condType, center = center + 5)
+
+  condType <- "xyz"
+  values <- runSim(ana)
+
+  expect_equal(values[values$type == 'pat', 'center'],
+               rep.int(center + 5 , 10))
+
+})
+
