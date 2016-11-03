@@ -120,8 +120,9 @@ runSim.default <- function(rSimLab){
 
 #' Hook for functions that are executed before the simulation.
 #'
-#' Functions are executed row by row. Variables are evaluated in the
-#' correct scope. PraeHook Functions can only modify parameters, not
+#' Functions are executed row by row. At first, variables are evaluated
+#' in the environment of the calling function, then in the environment of
+#' the parameters. PraeHook Functions can only modify parameters, not
 #' settings.
 #'
 #' @param rSimLab object of class rSimLab
@@ -145,11 +146,16 @@ runSim.default <- function(rSimLab){
 #'   addPraeHook(type != 'highQC', spread = spread + diff)
 #'
 addPraeHook <- function(rSimLab, cond = TRUE, ...){
-  cond_str <- lazyeval::lazy(cond)
-
+  cond_str <- lazyeval::f_capture(cond)
+  env <- parent.frame()
+  while(!identical(env, emptyenv())){
+    cond_str <- lazyeval::interp(cond_str, .values=env)
+    env <- parent.env(env)
+  }
+  dots <- lazyeval::lazy_dots(...)
   modFunc <- function(settings, params){
     comBObj <- cbind(settings, params)
-    condMet <- lazyeval::lazy_eval(cond_str, comBObj)
+    condMet <- lazyeval::f_eval(cond_str, comBObj)
 
     if(nrow(comBObj[condMet, ]) > 0){
       comBObj[condMet, ] <- comBObj[condMet, ] %>%
@@ -165,8 +171,9 @@ addPraeHook <- function(rSimLab, cond = TRUE, ...){
 
 #' Hook for functions that are executed after the simulation.
 #'
-#' Functions are executed row by row. Variables are evaluated in the
-#' correct scope.
+#' Functions are executed row by row. At first, variables are evaluated
+#' in the environment of the calling function, then in the environment of
+#' the parameters and settings.
 #'
 #' @param rSimLab object of class rSimLab
 #' @param cond condition, that must hold TRUE for the modification
@@ -176,15 +183,20 @@ addPraeHook <- function(rSimLab, cond = TRUE, ...){
 #' @return object of class rSimLab
 #' @export
 addPostHook <- function(rSimLab, cond = TRUE, ...){
-  cond_str <- lazyeval::lazy(cond)
+  cond_str <- lazyeval::f_capture(cond)
+  env <- parent.frame()
+  while(!identical(env, emptyenv())){
+    cond_str <- lazyeval::interp(cond_str, .values=env)
+    env <- parent.env(env)
+  }
+  dots <- lazyeval::lazy_dots(...)
 
   modFunc <- function(results){
-    condMet <- lazyeval::lazy_eval(cond_str, results)
-
+    condMet <- lazyeval::f_eval(cond_str, results)
     if(nrow(results[condMet, ]) > 0){
       results[condMet, ] <- results[condMet, ] %>%
         dplyr::rowwise() %>%
-        dplyr::mutate(...)
+        dplyr::mutate_(.dots=dots)
     }
     results
   }
