@@ -149,7 +149,8 @@ addPraeHook <- function(rSimLab, cond = TRUE, ...){
   cond_str <- lazyeval::f_capture(cond)
   env <- parent.frame()
   while(!identical(env, emptyenv())){
-    cond_str <- lazyeval::interp(cond_str, .values=env)
+    obj <- objFromEnv(env)
+    cond_str <- lazyeval::interp(cond_str, .values=obj)
     env <- parent.env(env)
   }
   dots <- lazyeval::lazy_dots(...)
@@ -186,7 +187,8 @@ addPostHook <- function(rSimLab, cond = TRUE, ...){
   cond_str <- lazyeval::f_capture(cond)
   env <- parent.frame()
   while(!identical(env, emptyenv())){
-    cond_str <- lazyeval::interp(cond_str, .values=env)
+    obj <- objFromEnv(env)
+    cond_str <- lazyeval::interp(cond_str, .values=obj)
     env <- parent.env(env)
   }
   dots <- lazyeval::lazy_dots(...)
