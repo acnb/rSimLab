@@ -5,7 +5,12 @@ objFromEnv <- function(env){
   nms <- nms[nms != 'T' & nms != 'F']
   obj.ls <- mget(nms, envir = env)
   res <- lapply(obj.ls, function(o)
-    ifelse(is.environment(o) | is.function(o), NA, o))
+    if(length(o) == 0) {
+      NA
+    }
+    else{
+      ifelse(is.environment(o) | is.function(o), NA, o)
+    })
   res[!is.na(res)]
 }
 
