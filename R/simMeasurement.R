@@ -129,12 +129,13 @@ runSim.measurement <- function(rSimLab){
 
  # params[[mname]] <- setting[[mname]]
 
-  for(f in rSimLab[["praeHook"]]){
-    params <- f(setting, params)
-  }
-
   results <- cbind(setting[, !colnames(setting) %in%
                              colnames(params), drop=F], params)
+  for(f in rSimLab[["praeHook"]]){
+    results <- f(results)
+  }
+
+
 
 
   results[[rname]]  <-

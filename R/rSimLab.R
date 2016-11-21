@@ -98,11 +98,11 @@ runSim.default <- function(rSimLab){
                                       nrow(params))),]
   }
 
-  for(f in rSimLab[["praeHook"]]){
-    params <- f(setting, params)
-  }
-
   results <- cbind(setting, params)
+
+  for(f in rSimLab[["praeHook"]]){
+    results <- f(results)
+  }
 
   rname <- as.character(params[1, "resultName"])
 
@@ -154,16 +154,15 @@ addPraeHook <- function(rSimLab, cond = TRUE, ...){
     env <- parent.env(env)
   }
   dots <- lazyeval::lazy_dots(...)
-  modFunc <- function(settings, params){
-    comBObj <- cbind(settings, params)
-    condMet <- lazyeval::f_eval(cond_str, comBObj)
+  modFunc <- function(res){
+    condMet <- lazyeval::f_eval(cond_str, res)
 
-    if(nrow(comBObj[condMet, ]) > 0){
-      comBObj[condMet, ] <- comBObj[condMet, ] %>%
+    if(nrow(res[condMet, ]) > 0){
+      res[condMet, ] <- res[condMet, ] %>%
         dplyr::rowwise() %>%
         dplyr::mutate(...)
     }
-    comBObj[, !colnames(comBObj) %in% colnames(settings)]
+    res
   }
   rSimLab[['praeHook']] <- append(rSimLab[['praeHook']], modFunc)
   rSimLab
