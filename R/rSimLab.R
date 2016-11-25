@@ -122,7 +122,7 @@ runSim.default <- function(rSimLab){
 #'
 #' Functions are executed row by row. At first, variables are evaluated
 #' in the environment of the calling function, then in the environment of
-#' the parameters. PraeHook Functions can only modify parameters, not
+#' the parameters. PraeHook Functions can only modify parameters and
 #' settings.
 #'
 #' @param rSimLab object of class rSimLab
