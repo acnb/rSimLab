@@ -6,7 +6,7 @@ test_that('check mean, sd and number of days', {
 
 
  cs <- s %>% dplyr::group_by(time) %>%
-   dplyr::summarise(freq = n())
+   dplyr::summarise(freq = dplyr::n())
 
  expect_equal(nrow(cs), nDays)
  expect_equal(mean(cs$freq), meanNumberPerDay,

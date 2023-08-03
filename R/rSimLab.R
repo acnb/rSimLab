@@ -190,14 +190,13 @@ addPostHook <- function(rSimLab, cond = TRUE, ...){
     cond_str <- lazyeval::interp(cond_str, .values=obj)
     env <- parent.env(env)
   }
-  dots <- lazyeval::lazy_dots(...)
 
   modFunc <- function(results){
     condMet <- lazyeval::f_eval(cond_str, results)
     if(nrow(results[condMet, ]) > 0){
       results[condMet, ] <- results[condMet, ] %>%
         dplyr::rowwise() %>%
-        dplyr::mutate_(.dots=dots)
+        dplyr::mutate(...)
     }
     results
   }
