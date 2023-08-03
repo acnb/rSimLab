@@ -1,11 +1,13 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/acnb/rSimLab.png?branch=master)](https://travis-ci.org/acnb/rSimLab) [![Coverage Status](https://img.shields.io/codecov/c/github/acnb/rSimLab/master.svg)](https://codecov.io/github/acnb/rSimLab?branch=master)
+<!-- badges: start -->
 
-rSimLab
-=======
+[![R-CMD-check](https://github.com/acnb/rSimLab/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/acnb/rSimLab/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
-A package for the simulation of measurements in laboratory medicine. Complex settings can be created from simple building blocks.
+# rSimLab
+
+A package for the simulation of measurements in laboratory medicine.
+Complex settings can be created from simple building blocks.
 
 Example:
 
