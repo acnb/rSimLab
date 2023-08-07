@@ -3,7 +3,6 @@
 \docType{package}
 \name{rSimLab}
 \alias{rSimLab}
-\alias{rSimLab-package}
 \title{rSimLab: A package for the simulation of measurements
 in laboratory medicine.}
 \description{
@@ -58,4 +57,3 @@ mm2 <- measurement(ana) \%>\%
 runSim(mm1)
 runSim(mm2)
 }
-

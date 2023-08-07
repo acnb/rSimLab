@@ -4,8 +4,13 @@
 \alias{analyte}
 \title{Analyte}
 \usage{
-analyte(settings = data.frame(), params = data.frame(resultName =
-  "trueValue"), praeHook = list(), sim.f = NULL, postHook = list())
+analyte(
+  settings = data.frame(),
+  params = data.frame(resultName = "trueValue"),
+  praeHook = list(),
+  sim.f = NULL,
+  postHook = list()
+)
 }
 \arguments{
 \item{settings}{a data.frame with settings for analytes}
@@ -13,8 +18,6 @@ analyte(settings = data.frame(), params = data.frame(resultName =
 \item{params}{a data.fram with additional params}
 
 \item{praeHook}{list of functions to modify settings and params}
-
-\item{sim.f}{function for the actual simualtion}
 
 \item{postHook}{list of functions to modify analytes}
 }
@@ -35,6 +38,7 @@ are executed to modify these true values. Again, settings and
 params are in scope of these functions directly.
 }
 \seealso{
-Other mainSteps: \code{\link{measurement}}
+Other mainSteps: 
+\code{\link{measurement}()}
 }
-
+\concept{mainSteps}

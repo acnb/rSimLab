@@ -31,6 +31,8 @@ Menditto, Antonio, Marina Patriarca, and Bertil Magnusson.
  Accreditation and quality assurance 12.1 (2007): 45-47.
 }
 \seealso{
-Other measurement.blocks: \code{\link{mm_precCharFunc}}
+Other measurement blocks: 
+\code{\link{mm_lotBiasFunc}()},
+\code{\link{mm_precCharFunc}()}
 }
-
+\concept{measurement blocks}

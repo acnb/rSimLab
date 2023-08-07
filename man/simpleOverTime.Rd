@@ -22,4 +22,3 @@ Creates a data.frame with time points for measurements.
 \examples{
 simpleOverTime(10, 4, 2)
 }
-

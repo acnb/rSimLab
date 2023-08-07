@@ -22,4 +22,3 @@ Functions are executed row by row. At first, variables are evaluated
 in the environment of the calling function, then in the environment of
 the parameters and settings.
 }
-

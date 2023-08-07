@@ -4,10 +4,12 @@
 \alias{measurement}
 \title{Measurements}
 \usage{
-measurement(settings = data.frame(), params = data.frame(measuredName =
-  "trueValue", resultName = "measurement"), praeHook = list(), sim.f = NULL,
-  postHook = list(), f.imprec = function(...) 0,
-  f.trueness = function(...) 0)
+measurement(
+  settings = data.frame(),
+  params = data.frame(measuredName = "trueValue", resultName = "measurement"),
+  praeHook = list(),
+  postHook = list()
+)
 }
 \arguments{
 \item{settings}{data.frame with 'trueValue colume' or analyte
@@ -17,13 +19,7 @@ object}
 
 \item{praeHook}{list of functions to modify settings and params}
 
-\item{sim.f}{function for the actual simualtion}
-
 \item{postHook}{list of functions to modify analytes}
-
-\item{f.imprec}{function to simulate imprecision}
-
-\item{f.trueness}{function to simulate trueness}
 }
 \value{
 measurement object
@@ -34,12 +30,13 @@ simulates measurements from true values of analytes. First,
 settings and params need to be supplied. The functions in
 the praeHook list are executed to modify params. Settings
 and params are in scope of these functions directly. The
-sim.f function simulates measurements from true values.
+sim.fxs functions simulate measurements from true values.
 The functions in the postHook list are executed to
 modify these measuerments. Again, settings and
 params are in scope of these functions directly.
 }
 \seealso{
-Other mainSteps: \code{\link{analyte}}
+Other mainSteps: 
+\code{\link{analyte}()}
 }
-
+\concept{mainSteps}

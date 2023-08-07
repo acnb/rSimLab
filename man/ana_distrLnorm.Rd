@@ -32,6 +32,7 @@ Haeckel, Rainer, and Werner Wosniok.
    medicine 48.10 (2010): 1393-1396.
 }
 \seealso{
-Other analyte.blocks: \code{\link{ana_addQC}}
+Other analyte blocks: 
+\code{\link{ana_addQC}()}
 }
-
+\concept{analyte blocks}

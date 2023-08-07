@@ -35,4 +35,3 @@ analyte(data.frame('time' = 1:10, 'type' = 'pat')) \%>\%
   addPraeHook(type != 'highQC', spread = spread + diff)
 
 }
-

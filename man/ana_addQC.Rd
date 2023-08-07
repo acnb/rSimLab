@@ -28,6 +28,7 @@ QC measurements are added after everthing else is done
 (postHook).
 }
 \seealso{
-Other analyte.blocks: \code{\link{ana_distrLnorm}}
+Other analyte blocks: 
+\code{\link{ana_distrLnorm}()}
 }
-
+\concept{analyte blocks}

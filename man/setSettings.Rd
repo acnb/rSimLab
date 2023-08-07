@@ -28,4 +28,3 @@ library(magrittr)
    ana_distrLnorm(center = 5, spread = 5) \%>\%
    setSettings(data.frame('time' = 1:10, 'type' = 'pat'))
 }
-
