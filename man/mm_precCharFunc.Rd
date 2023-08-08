@@ -32,6 +32,7 @@ Journal of AOAC International 95.6 (2012): 1803-1806.
 \seealso{
 Other measurement blocks: 
 \code{\link{mm_accFunc}()},
-\code{\link{mm_lotBiasFunc}()}
+\code{\link{mm_lotBiasFunc}()},
+\code{\link{mm_lotBiasVariationFunc}()}
 }
 \concept{measurement blocks}

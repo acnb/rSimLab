@@ -9,7 +9,7 @@ mm_lotBiasFunc(measurement, relDLot = 0)
 \arguments{
 \item{measurement}{(unevaluated) object of class measurement}
 
-\item{relDLot}{relative deviation attributable  to a reagent lot}
+\item{relDLot}{relative deviation attributable to a reagent lot}
 }
 \value{
 (unevaluated) object of class measurement
@@ -20,6 +20,7 @@ Adds a bias from a reagent lot
 \seealso{
 Other measurement blocks: 
 \code{\link{mm_accFunc}()},
+\code{\link{mm_lotBiasVariationFunc}()},
 \code{\link{mm_precCharFunc}()}
 }
 \concept{measurement blocks}

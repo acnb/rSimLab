@@ -8,7 +8,6 @@ analyte(
   settings = data.frame(),
   params = data.frame(resultName = "trueValue"),
   praeHook = list(),
-  sim.f = NULL,
   postHook = list()
 )
 }

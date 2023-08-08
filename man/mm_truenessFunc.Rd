@@ -33,6 +33,7 @@ Menditto, Antonio, Marina Patriarca, and Bertil Magnusson.
 \seealso{
 Other measurement blocks: 
 \code{\link{mm_lotBiasFunc}()},
+\code{\link{mm_lotBiasVariationFunc}()},
 \code{\link{mm_precCharFunc}()}
 }
 \concept{measurement blocks}

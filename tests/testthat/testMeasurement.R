@@ -64,3 +64,43 @@ test_that('acc equals trueness',{
   res2 <- mm %>% mm_truenessFunc(.2, .3) %>% runSim()
   expect_equal(res1, res2)
 })
+
+test_that('lot Bias adds additional bias',{
+  mm <- measurement(data.frame('trueValue' = 3)) %>%
+    mm_truenessFunc(.2, 0) %>%
+    mm_lotBiasFunc(.05)
+
+  values <- runSim(mm)
+  expect_equal(values$measurement[1],
+               3*1.05 + .2)
+})
+
+test_that('systemic lot bias is average bias',{
+
+  setting <- simpleOverTime(10,10, 50)
+
+  ana <- analyte(setting) %>%
+    ana_distrNorm(3.5 , .886)
+  # Measurements with imprecision and bias.
+  mm <- measurement(ana) %>%
+    mm_lotBiasVariationFunc(sdRelDLot = 0,
+                            systemicRelDLot = .5) %>%
+    mm_truenessFunc(0, 0)
+
+  values <- runSim(mm)
+
+  biasSim <- values$measurement/values$trueValue
+  expect_equal(rep_len(1.5, nrow(values)), biasSim)
+
+
+  mm <- measurement(ana) %>%
+    mm_lotBiasVariationFunc(sdRelDLot = 0,
+                            systemicRelDLot = .5,
+                            nTimesPerLot = 2) %>%
+    mm_truenessFunc(0, 0)
+
+  values <- runSim(mm)
+
+  biasSim <- values$measurement/values$trueValue
+  expect_equal(rep_len(1.5, nrow(values)), biasSim)
+})

@@ -62,13 +62,13 @@ NULL
 rSimLab <- function(setting = data.frame(),
                    params = data.frame(),
                    praeHook = list(),
-                   sim.f = function(...){},
+                #   sim.f = function(...){},
                    postHook = list()){
   rSimLab <- list(
     setting = setting,
     params = params,
     praeHook = praeHook,
-    sim.f = sim.f,
+  #  sim.f = sim.f,
     postHook = postHook
   )
   class(rSimLab) <- append(class(rSimLab), "rSimLab")

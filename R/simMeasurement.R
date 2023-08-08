@@ -103,12 +103,60 @@ mm_truenessFunc <- function(measurement,
 
 #' Adds a bias from a reagent lot
 #'
-#' @param relDLot relative deviation attributable  to a reagent lot
+#' @param relDLot relative deviation attributable to a reagent lot
 #'
 #' @export
 #' @template measurement-block
 mm_lotBiasFunc <- function(measurement, relDLot = 0) {
   measurement[["params"]]$relDLot <- relDLot
+
+  fn <- function(x) {
+    mname <- as.character(x$measuredName[1])
+    x[[mname]] * x$relDLot
+  }
+
+  measurement[['sim.fxs']] <- append(measurement[['sim.fxs']], fn)
+
+  measurement
+}
+
+
+#' Adds reagent lots with different bias. Distribution of lot biases can be
+#' specified as normal distribution
+#'
+#'
+#' @param sdRelDLot standard deviation of distribution of lot biases
+#' @param systemicRelDLot mean of distribution of lot biases; systemic bias
+#' @param nTimesPerLot times (e.g. days) each lot is in use
+#'
+#' @export
+#' @template measurement-block
+#' @importFrom rlang .data
+mm_lotBiasVariationFunc <- function(measurement,
+                                    sdRelDLot,
+                                    systemicRelDLot = 0,
+                                    nTimesPerLot = NULL) {
+
+
+  if (!is.null(nTimesPerLot)){
+    fnPrae <- function(x){
+      if(is.null(x$time)) return(x)
+      res <- x %>% dplyr::mutate(lot = ceiling(.data$time/nTimesPerLot))
+
+      lots <- tibble::tibble(lot = unique(res$lot)) %>%
+        dplyr::mutate(relDLot = rnorm(n = dplyr::n(), sd = sdRelDLot,
+                                      mean = systemicRelDLot))
+      res %>%
+        dplyr::left_join(lots, by="lot") %>%
+        return()
+    }
+
+    measurement[['praeHook']] <- append(measurement[['praeHook']],
+                                        fnPrae)
+  } else {
+    measurement[["params"]]$relDLot <- rnorm(n = 1, sd = sdRelDLot,
+                                             mean = systemicRelDLot)
+  }
 
   fn <- function(x) {
     mname <- as.character(x$measuredName[1])

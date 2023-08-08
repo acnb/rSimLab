@@ -20,11 +20,12 @@ analyte <- function(settings = data.frame(),
                     params = data.frame("resultName" =
                                          "trueValue"),
                     praeHook = list(),
-                    sim.f = NULL,
+           #         sim.f = NULL,
                     postHook = list()){
 
 
-  ana <- rSimLab(settings, params, praeHook, sim.f, postHook)
+  ana <- rSimLab(settings, params, praeHook,# sim.f,
+                 postHook)
   class(ana) <- append(class(ana), "analyte")
   ana
 }

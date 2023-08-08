@@ -16,7 +16,8 @@ Imports:
     dplyr,
     lazyeval,
     purrr,
-    tibble
+    tibble,
+    rlang
 Suggests:
     testthat
 RoxygenNote: 7.2.3
