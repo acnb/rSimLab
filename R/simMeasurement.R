@@ -137,6 +137,8 @@ mm_lotBiasVariationFunc <- function(measurement,
                                     systemicRelDLot = 0,
                                     nTimesPerLot = NULL) {
 
+  measurement[["params"]]$sdRelDLot <- sdRelDLot
+  #measurement[["params"]]$systemicRelDLot <- systemicRelDLot
 
   if (!is.null(nTimesPerLot)){
     fnPrae <- function(x){
@@ -144,7 +146,8 @@ mm_lotBiasVariationFunc <- function(measurement,
       res <- x %>% dplyr::mutate(lot = ceiling(.data$time/nTimesPerLot))
 
       lots <- tibble::tibble(lot = unique(res$lot)) %>%
-        dplyr::mutate(relDLot = rnorm(n = dplyr::n(), sd = sdRelDLot,
+        dplyr::mutate(systemicRelDLot = systemicRelDLot,
+                      relDLot = rnorm(n = dplyr::n(), sd = sdRelDLot,
                                       mean = systemicRelDLot))
       res %>%
         dplyr::left_join(lots, by="lot") %>%
@@ -197,7 +200,7 @@ runSim.measurement <- function(rSimLab) {
   rx <- purrr::map(rSimLab[['sim.fxs']], function(fx){
     fx(results) %>% tibble::as_tibble_col()
   }) %>%
-    purrr::list_cbind()
+    purrr::list_cbind(name_repair = "unique_quiet")
 
   results[[rname]]  <- results[[mname]] + rowSums(rx)
 
